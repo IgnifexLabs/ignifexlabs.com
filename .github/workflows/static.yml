@@ -22,19 +22,15 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          # pick a version that matches your local/Docker image if needed
           ruby-version: '3.2'
           bundler-cache: true
 
@@ -46,8 +42,8 @@ jobs:
 
       - name: Build Jekyll site
         working-directory: docs
-        # adjust baseurl if your site needs it
         run: bundle exec jekyll build
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
