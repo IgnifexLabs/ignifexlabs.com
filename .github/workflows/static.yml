@@ -28,16 +28,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
+      - name: Install Ruby & Bundler via apt
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ruby-full ruby-bundler
 
       - name: Install dependencies
         working-directory: docs
         run: |
-          bundle config set path 'vendor/bundle'
+          bundle config set --local path 'vendor/bundle'
           bundle install --jobs 4 --retry 3
 
       - name: Build Jekyll site
